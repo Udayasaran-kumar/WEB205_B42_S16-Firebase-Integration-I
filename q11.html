@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Firebase Realtime Database</title>
+<style>
+ table, th, td {
+  border: 1px solid;
+  width: max-content;
+}
+</style>
+</head>
+<body>
+    <table id="table">
+        <thead>
+            <tr>
+        <th>sl.no</th>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody id="body">
+        
+    </tbody>
+    </table>
+</body>
+</html>
+<script>
+    async function fetcher() {
+        try {
+            let response=await fetch("https://fir-integration1-58162-default-rtdb.firebaseio.com/users.json")
+            let resp=await response.json();
+            let data=resp ? Object.values(resp) : [];
+            console.log(data);
+            displaydata(data);
+        } catch (error) {
+            alert("error fetching data..Try again..");
+        }
+        
+    }
+    function displaydata(arr){
+        let cont=document.getElementById("body");
+        arr.forEach((element,i )=> {
+            let row=document.createElement("tr");
+            row.innerHTML=`
+           <td>${i+1}</td>
+           <td>${element.name}</td>
+           <td>${element.email}</td>
+            `;
+             cont.appendChild(row);   
+        });
+    }
+    fetcher();
+</script>
