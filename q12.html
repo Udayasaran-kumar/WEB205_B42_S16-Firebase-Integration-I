@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding Data to Firebase Realtime Database</title>
+
+</head>
+<body>
+    <h2>Add User</h2>
+    <form id="userForm">
+        <input type="text" id="name" placeholder="Enter Name" >
+        <input type="email" id="email" placeholder="Enter Email" >
+        <button type="submit">Submit</button>
+    </form>
+    <p id="message"></p>
+</body>
+</html>
+<script>
+   document.getElementById("userForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); 
+            
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let messageBox = document.getElementById("message");
+            if (!name || !email) {
+                messageBox.textContent = "Please enter both name and email.";
+                return;
+            }
+            let user = { name, email };
+
+            try {
+                let response = await fetch("https://fir-integration1-58162-default-rtdb.firebaseio.com/users.json", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(user)
+                });
+
+                if (response.ok) {
+                    messageBox.textContent = "User added successfully!";
+                     } else {
+                    throw new Error("Failed to add user.");
+                }
+            } catch (error) {
+                alert("error occured,Try later");
+              }
+        });
+</script>
